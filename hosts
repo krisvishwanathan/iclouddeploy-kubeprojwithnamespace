@@ -1,0 +1,6 @@
+[master]
+ks-master 
+[nodes]
+ks-node1 
+#ks-node2 
+

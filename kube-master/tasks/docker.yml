@@ -1,0 +1,22 @@
+---
+- name: Install docker
+  apt:
+   name: "{{ item }}"
+   update_cache: yes
+   state: latest
+  when: ansible_distribution == 'Ubuntu'
+  with_items:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+
+- name: curl apt key
+  shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+- name: add repo
+  shell: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") $(lsb_release -cs) stable"
+
+- name: install docker
+  shell: apt-get update && apt-get install -y docker-ce=$(apt-cache madison docker-ce | grep 17.09 | head -1 | awk '{print $3}')
+
